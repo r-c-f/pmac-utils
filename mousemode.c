@@ -18,6 +18,10 @@
 #include <linux/adb.h>
 #include <linux/cuda.h>
 
+
+#define BUFLEN 80
+
+
 int fd;	/* put this here where everybody can see it. Hey, it's not so	*/
 	/* much a global as it is an "object variable," where this	*/
 	/* program is the object. Yeah, that's it! Ahem.		*/
@@ -48,7 +52,7 @@ listen(unsigned char *y)
 {
     int n;
     
-    n = read(fd, y, 80);
+    n = read(fd, y, BUFLEN);
 #if 0
     printf("%d: ",n);
     if (n > 0) {
@@ -68,7 +72,7 @@ listen(unsigned char *y)
 void
 setmouse(int addr, int mode)
 {
-    unsigned char y[15];
+    unsigned char y[BUFLEN];
 
     /* curious parties should read Inside Mac/Devices/ADB Manager,	*/
     /* looking at page 5-11. Inside Mac is available as pdf files	*/
@@ -91,7 +95,7 @@ setmouse(int addr, int mode)
 int 
 showmouse(int addr)
 {
-    unsigned char y[15];
+    unsigned char y[BUFLEN];
     
     y[0] = ADB_PACKET;
     y[1] = ADB_READREG(addr, 3);
