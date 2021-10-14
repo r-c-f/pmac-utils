@@ -22,6 +22,10 @@
 #include <linux/cuda.h>
 #include <linux/adb.h>
 
+
+#define BUFLEN 80
+
+
 //#define DEBUG
 
 int fd;
@@ -51,7 +55,7 @@ listen(unsigned char *y)
 {
     int n;
     
-    n = read(fd, y, 80);
+    n = read(fd, y, BUFLEN);
 
 #ifdef DEBUG
     printf("listen (%d bytes): ",n);
@@ -75,7 +79,7 @@ listen(unsigned char *y)
 void
 set_program_mode(int id, int set)
 {
-	unsigned char buf[16];
+	unsigned char buf[BUFLEN + 1]; //for offset
 	int n;
 	
 #ifdef DEBUG
@@ -112,7 +116,7 @@ enum
 void
 set_trackpad(int id, int mode)
 {
-	unsigned char buf[16];
+	unsigned char buf[BUFLEN + 1]; /* for offset */
 
 	set_program_mode(id, 1);
 	
@@ -121,13 +125,12 @@ set_trackpad(int id, int mode)
 #endif
 
 	if (mode == mode_show) {
-		int n;
 
 		printf("READREG(%d, %d) ", id, 2);
 		buf[0] = ADB_PACKET;
 		buf[1] = ADB_READREG(id, 2);
 		send(buf, 2);
-		n = listen(buf);
+		listen(buf);
 #ifdef DEBUG
 		printf("(reply %d bytes): ",n);
 		if (n >= 0) {
@@ -189,7 +192,7 @@ locate_trackpad(void)
 	
 	for (i=1; i<16; i++)
 	{
-		unsigned char buf[16];
+		unsigned char buf[BUFLEN];
 		
 #ifdef DEBUG		
 		printf("testing %d...\n", i);

@@ -147,7 +147,7 @@ insert_val (char* nvbufend, int varsize,   char* buf,
 	    char* newval,   int foundsize, int equalpos)
 {
     int 	oldlen 	= foundsize - equalpos -1; // account for the '='
-    int		newlen 	= strlen(newval);
+    int		newlen 	= strlen(newval) + 1; //for NUL
     char* 	valpos 	= buf + varsize + 1;
     int 	delta 	= newlen - oldlen;
 
