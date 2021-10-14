@@ -1,0 +1,39 @@
+<!doctype linuxdoc system>
+
+<manpage title="MOUSEMODE" sectnum="8">
+
+<sect1> NAME<p>
+<bf>mousemode</bf> - tell the mouse to use a given device handler ID
+
+<sect1> SYNOPSIS<p>
+<bf/mousemode/
+<tt/[/<em/mode/<tt/]/
+
+<sect1> DESCRIPTION<p>
+<bf>mousemode</bf> tells the mouse to use a given device handler ID
+(``mode''), and then asks the mouse what mode it's really in. The
+mouse only "sticks" in modes it supports.
+<bf>mousemode</bf> with no arguments just queries the mouse's mode and
+prints it, without trying to change it.
+ 
+<sect1> OPTIONS<p>
+<descrip>
+<tag/<em>mode</em>/ number of mouse ``mode'', i.e. 4 is the extended
+mouse protocol
+</descrip>
+
+<sect1> FILES<p>
+<bf>mousemode</bf> needs the following device:
+<descrip>
+<tag><em>/dev/adb</em></tag> character device with major number 56 and
+minor number 0
+</descrip>
+
+<sect1> AUTHORS<p>
+<verb>Paul Mackerras <paulus@cs.anu.edu.au> (program)</verb>
+<verb>Richard van Hees <R.M.vanHees@phys.uu.nl> (documentation)</verb>
+
+<sect1> BUGS<p>
+none ;-)
+
+</manpage>

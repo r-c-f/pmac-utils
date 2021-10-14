@@ -1,0 +1,77 @@
+<!doctype linuxdoc system>
+
+<manpage title="CLOCK" sectnum="8">
+
+<sect1> NAME<p>
+<bf>clock</bf> - manipulate the CMOS clock
+
+<sect1> SYNOPSIS<p>
+<bf>clock
+<tt>[</tt><bf/-u/<tt>] 
+    [</tt><bf/-rwsa/<tt>] 
+    [</tt><bf/-v/<tt><bf/]/</tt>
+</bf>
+
+<sect1> DESCRIPTION<p>
+<bf>clock</bf> manipulates the CMOS clock in variaous ways, allowing
+it to be read or written, and allowing synchronization between the
+CMOS clock and the kernel's version of the system time.
+
+<sect1> OPTIONS<p>
+<descrip>
+<tag/<bf/-u/</> indicates that the CMOS clock is set to universal time
+<tag/<bf/-r/</> read CMOS clock and print the result to stdout
+<tag/<bf/-w/</> write the system time into the CMOS clock
+<tag/<bf/-s/</> set the system time from the CMOS clock
+<tag/<bf/-a/</> set the system time from the CMOS clock, adjusting
+the time to correct for systematic error, and writting it back into
+the CMOS clock.
+<tag/<bf/-v/</> print version number
+</descrip>
+
+The <bf/-a/ option uses the file <em>/etc/adjtime</em> to determine
+how the clock changes. It contains three numbers: 
+<enum> 
+<item> the correction in seconds per day (for example, if your clock
+runs 5 seconds fast each day, the first number should read -5.0),
+<item> time when <bf>clock</bf> was last used, in seconds since 1/1/1970,
+<item> the remaining part of a second that was left over after the
+last adjustment.
+</enum>
+<p>
+The following instructions are from the source code:
+<enum> create a file <em>/etc/adjtime</em> containing as the first and
+only line: '0.0 0 0.0',
+<item> run <bf>clock -au</> or <bf>clock -a</>, depending on whether
+your CMOS is in Universal or Local Time. This updates the second number,
+<item> set your system time using the <bf>date</> command,
+<item> update your CMOS time using <bf>clock -wu</> or <bf>clock -w</>,
+<item> replace the first number in <em>/etc/adjtime</> by your
+correction,
+<item> put the command <bf>clock -au</> or <bf>clock -a</> in your
+<em>/etc/rc.local</>, or let <bf>cron</> start it regularly.
+</enum>
+
+<sect1> FILES<p>
+<em>/etc/adjtime</em> 
+
+<em>/etc/rc.local</em>
+
+<sect1> AUTHORS<p>
+<descrip>
+<tag/<bf/V1.0/</> Charles Hedrick, hedrick@cs.rutgers.edu, Apr 1992
+<tag/<bf/V1.1/</> Modified for clock adjustments, Rob Hooft,
+hooft@chem.ruu.nl, Nov 1992
+<tag/<bf/V1.2/</> Patches by Harald Koenig,
+koenig@nova.tat.physik.uni-tuebingen.de, applied by Rob Hooft,
+hooft@EMBL-Heidelberg.DE, Oct 1993
+<tag/<bf/V1.3/</> Changes from alan@spri.levels.unisa.edu.au (Alan Modra)
+<tag/<bf/V1.4/</> Fix for years &gt; 2000
+alan@SPRI.Levels.UniSA.Edu.Au (Alan Modra),
+and added <bf/-v/ option to print version faith@cs.unc.edu, Feb 1995.
+<tag/<bf/V1.4a/</> Converted to be compatible with the SPARC /dev/rtc driver
+Tom Dyas (tdyas@eden.rutgers.edu), Aug 1996
+<tag/<bf/V1.4b/</> Adapted for Power Macintosh by Paul Mackerras, Dec 1996
+</descrip>
+
+</manpage>

@@ -1,0 +1,56 @@
+<!doctype linuxdoc system>
+
+<manpage title="SNDVOLMIX" sectnum="8">
+
+<sect1> NAME<p>
+<bf/sndvolmix/ - sound volume setup
+
+<sect1> SYNOPSIS<p>
+<bf>sndvolmix 
+<tt>[</tt><bf/-h/<tt>] 
+    [</tt><bf/-a/<tt>] 
+    [</tt><bf/-c/<tt>] 
+    [</tt><bf/-m/<tt>]
+    [</tt><em/vol/<tt>]
+    [</tt><em/lvol rvol/<tt><bf/]/</tt>
+</bf>
+
+<sect1> DESCRIPTION<p>
+<bf/sndvolmix/ activate different sound devices, you can play
+something through line in (Audio In), cdrom, and microphone
+simultaneously.
+
+<sect1> OPTIONS<p>
+<descrip>
+<tag/<bf/-h</></> mute headphones
+<tag/<bf/-a</></> activate Audio In play-through
+<tag/<bf/-c</></> activate Cdrom play-through
+<tag/<bf/-m</></> activate Microphone play-through
+<tag/<em/vol/</> master volume can be specified in a range
+of 0-15 for both channels, 
+<tag/<em/lvol rvol</></>or for left and right separately.
+</descrip>
+
+<sect1> NOTES<p>
+First of all you need a kernel with sound support.
+Scan the output of the <em/dmesg</> command or the <em>sndstat</>
+device (use <em>cat</>) for sound support.
+<bf/sndvolmix/ needs to read <em>/dev/mem</em>, therefor you need to
+be superuser, or "set UID" of this program must be set.
+
+<sect1> BUGS<p>
+<bf/sndvolmix/ (as distributed in the pmac-utils RPM) accesses the
+awacs device registers directly without telling the audio driver.
+If you run a program which uses the audio driver, the driver will
+often update the registers with what it thinks are the current values,
+which may differ from what you set with sndvolmix.
+It is therefor recommended to use for example aumix, xmixer, xmmixer, etc.
+
+<sect1> SEE ALSO<p>
+dmesg(8)
+
+<sect1> AUTHORS<p>
+<verb>Bibek Sahu <scorpio@dodds.net> (program)</verb>
+<verb>Richard van Hees <R.M.vanHees@phys.uu.nl> (documentation)</verb>
+
+</manpage>

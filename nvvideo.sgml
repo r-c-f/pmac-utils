@@ -1,0 +1,73 @@
+<!doctype linuxdoc system>
+
+<manpage title="NVVIDEO" sectnum="8">
+
+<sect1> NAME<p>
+nvvideo - Powermac/Linux video/color mode selector
+
+<sect1> SYNOPSIS<p>
+<bf>nvvideo 
+<tt/[/<em/variable/ <tt/[/<em/value/<tt/<bf/]]//
+</bf>
+
+<sect1> DESCRIPTION<p>
+<bf/nvvideo/ is a program to adjust or view the values of default
+video resolution and default color mode as stored in parameter RAM.
+<bf/nvvideo/ will show the current values of the video and color
+mode, when no parameters are given. The video-mode are defined by a
+number between 1 and 20, while the color-mode are defined by a number
+between 1 and 4, see section <bf>DEFINITIONS</bf>.
+
+<sect1> OPTIONS<p>
+<descrip>
+<tag/<em>variable</em>/ current value of given variable is returned,
+valid are <em>video-mode</em> and <em>color-mode</em>
+<tag/<em>variable value</em>/ value of given variable is changed to
+given value
+</descrip>
+
+<sect1> DEFINITIONS<p>
+Defined console <em>video-modes</em> are:
+<descrip>
+<tag/<bf/ 1/</>  512x384  60Hz (Interlaced-NTSC),
+<tag/<bf/ 2/</>  512x384  60Hz,
+<tag/<bf/ 3/</>  640x480  50Hz (Interlaced-PAL),
+<tag/<bf/ 4/</>  640x480  60Hz (Interlaced-NTSC),
+<tag/<bf/ 5/</>  640x480  60Hz,
+<tag/<bf/ 6/</>  640x480  67Hz,
+<tag/<bf/ 7/</>  640x870  75Hz (Portrait),
+<tag/<bf/ 8/</>  768x576  50Hz (Interlaced-PAL),
+<tag/<bf/ 9/</>  800x600  56Hz,
+<tag/<bf/10/</>  800x600  60Hz,
+<tag/<bf/11/</>  800x600  72Hz,
+<tag/<bf/12/</>  800x600  75Hz,
+<tag/<bf/13/</>  832x624  75Hz,
+<tag/<bf/14/</> 1024x768  60Hz,
+<tag/<bf/15/</> 1024x768  72Hz,
+<tag/<bf/16/</> 1024x768  75Hz,
+<tag/<bf/17/</> 1024x768  75Hz,
+<tag/<bf/18/</> 1152x870  75Hz,
+<tag/<bf/19/</> 1280x960  75Hz,
+<tag/<bf/20/</> 1280x1024 75Hz.
+</descrip>
+
+<p>
+Defined console <em>color-modes</em> are:
+<descrip>
+<tag/<bf/0/</> 8 bit
+<tag/<bf/1/</> 16 bit
+<tag/<bf/2/</> 24 bit
+</descrip>
+
+<sect1> SEE ALSO<p>
+vmode(8)
+
+<sect1> AUTHORS<p>
+<verb>Paul Mackerras <paulus@cs.anu.edu.au> (program)</verb>
+<verb>Richard van Hees <R.M.vanHees@phys.uu.nl> (documentation)</verb>
+
+<sect1> BUGS<p>
+You can not modify color or video settings with <bf/nvvideo/ while
+running X.
+
+</manpage>

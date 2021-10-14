@@ -1,0 +1,20 @@
+Begin
+Title:          pmac-utils
+Version:        1.1.3
+Entered-date:   July 21 1998
+Description:    Utilities needed by the monolithic port of Linux to PCI Power 
+		Macintoshes, included are clock, fdeject, macos, mousemode, 
+		nvsetenv, nvvideo, sndvolmix, vmode 	
+Keywords:       Utilities/System
+Author(s):      Paul Mackerras:	clock, fdeject, macos, nvsetenv, nvvideo, vmode
+		Bibek Sahu:	sndvolmix
+		Jon Howell:	mousemode
+		Richard van Hees: man-pages
+Maintained-by:  R.M.vanHees@phys.uu.nl (Richard van Hees)
+Primary-site:   ftp://ftp.linuxppc.org/RedHat
+Original-site:  ftp://fysvp.phys.uu.nl/pub/redhat
+		10kB  pmac-utils-1.1.2.tar.gz
+		1kB   pmac-utils-1.1.2.lsm
+Platform:       Powermac/Linux (monolithic port)
+Copying-policy: GPL
+End

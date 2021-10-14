@@ -1,0 +1,28 @@
+<!doctype linuxdoc system>
+
+<manpage title="FDEJECT" sectnum="1">
+
+<sect1> NAME<p>
+<bf/fdeject/ - eject floppy
+
+<sect1> SYNOPSIS<p>
+<bf/fdeject/ <tt/[/<em/device/<tt/]/
+
+<sect1> DESCRIPTION<p>
+<bf/fdeject/ lets you eject a floppy out of your Power Macintosh
+floppy drive.
+
+<sect1> OPTIONS<p>
+<descrip>
+<tag/<em>device</em>/ name of your floppy device, 
+     default: <bf>/dev/fd0</bf>
+</descrip>
+
+<sect1> AUTHORS<p>
+<verb>Paul Mackerras <paulus@cs.anu.edu.au> (program)</verb>
+<verb>Richard van Hees <R.M.vanHees@phys.uu.nl> (documentation)</verb>
+
+<sect1> BUGS<p>
+none ;-)
+
+</manpage>

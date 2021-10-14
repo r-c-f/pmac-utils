@@ -1,0 +1,61 @@
+<!doctype linuxdoc system>
+
+<manpage title="VMODE" sectnum="8">
+
+<sect1> NAME<p>
+vmode - Powermac/Linux runtime video/color mode selector
+
+<sect1> SYNOPSIS<p>
+<bf/vmode/ <tt/[/<em/video-resolution video-depth/<tt/]/
+
+<sect1> DESCRIPTION<p>
+<bf/vmode/ is a program to display or change the resolution and
+depth of your console.
+<bf/vmode/ will show the current values of the video resolution
+and depth, when no parameters are given. 
+
+<sect1> OPTIONS<p>
+<descrip>
+<tag/<em>video-resolution</em>/ a number between 1 and 20 
+         (see section <bf/DEFINITIONS/).
+<tag/<em>video-depth </em>/ can be set to 8, 15, 16, 24 and 32 
+         (24 and 32 are really the same).
+</descrip>
+
+<sect1> DEFINITIONS<p>
+Defined console <em>video-resolutions</em> are:
+<enum>
+<item> 512x384  60Hz (Interlaced-NTSC),
+<item> 512x384  60Hz,
+<item> 640x480  50Hz (Interlaced-PAL),
+<item> 640x480  60Hz (Interlaced-NTSC),
+<item> 640x480  60Hz,
+<item> 640x480  67Hz,
+<item> 640x870  75Hz (Portrait),
+<item> 768x576  50Hz (Interlaced-PAL),
+<item> 800x600  56Hz,
+<item> 800x600  60Hz,
+<item> 800x600  72Hz,
+<item> 800x600  75Hz,
+<item> 832x624  75Hz,
+<item> 1024x768  60Hz,
+<item> 1024x768  72Hz,
+<item> 1024x768  75Hz,
+<item> 1024x768  75Hz,
+<item> 1152x870  75Hz,
+<item> 1280x960  75Hz,
+<item> 1280x1024 75Hz.
+</enum>
+
+<sect1> SEE ALSO<p>
+nvvideo(8)
+
+<sect1> AUTHORS<p>
+<verb>Paul Mackerras <paulus@cs.anu.edu.au> (program)</verb>
+<verb>Richard van Hees <R.M.vanHees@phys.uu.nl> (documentation)</verb>
+
+<sect1> BUGS<p>
+You can not modify color or video settings with <bf/vmode/ while
+running X.
+
+</manpage>

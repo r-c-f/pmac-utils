@@ -1,0 +1,14 @@
+#!/bin/sh
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
+
+# check that we are being run from the console
+if ! expr "`tty`" : '^/dev/tty[0-9]$' >/dev/null; then
+  echo "Must be run from console"
+  exit 1
+fi
+
+nvsetenv boot-device /AAPL,ROM
+nvsetenv real-base ffffffff
+
+exec shutdown -t 1 -r now

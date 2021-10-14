@@ -1,0 +1,19 @@
+<!doctype linuxdoc system>
+
+<manpage title="MACOS" sectnum="8">
+
+<sect1> NAME<p>
+<bf>macos</bf> - reboot into MacOS
+
+<sect1> SYNOPSIS<p>
+<bf>macos</bf>
+
+<sect1> DESCRIPTION<p>
+<bf>macos</bf> changes the OF variables to boot MacOS, and reboots the
+system into MacOS. Can only be run from console (as root).
+
+<sect1> AUTHORS<p>
+<verb>Paul Mackerras <paulus@cs.anu.edu.au> (program)</verb>
+<verb>Richard van Hees <R.M.vanHees@phys.uu.nl> (documentation)</verb>
+
+</manpage>

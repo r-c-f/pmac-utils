@@ -1,0 +1,96 @@
+<!doctype linuxdoc system>
+
+<manpage title="NVSETENV" sectnum="8">
+
+<sect1> NAME<p>
+<bf/nvsetenv/ - change/view OF's environment boot-variables 
+
+<sect1> SYNOPSIS<p>
+<bf>nvsetenv 
+<tt/[/<em/variable/ <tt/[/<em/value/<tt/<bf/]]//
+</bf>
+
+<sect1> DESCRIPTION<p>
+<bf/nvsetenv/ is a program to adjust or view the Open Firmware (OF)
+boot parameters stored in non-volatile (battery-powered) RAM on your
+Macintosh computer. 
+<bf/nvsetenv/ will show the current values of all OF's environment
+variables when no parameters are given.
+
+<sect1> OPTIONS<p>
+<descrip>
+<tag/<em>variable</em>/ nvsetenv will show current value of an OF's
+variable, if no value is given
+<tag/<em>variable value</em>/ nvsetenv will set <em>variable</em> to
+<em>value</em>
+</descrip>
+
+<sect1> EXAMPLES<p>
+This example will set the boot device to the first SCSI disk on the
+internal SCSI bus, using /vmlinux as boot image, trying to
+use the third partition as root partition.
+<tscreen><verb>
+        > nvsetenv boot-device  "scsi-int/sd@0:0"
+        > nvsetenv boot-file    " /vmlinux root=/dev/sda3"
+</verb></tscreen>
+
+Alternatives boot devices are: 
+<tscreen><verb>
+        scsi/sd@1:0             SCSI disk at ID 1
+        ata/ata-disk@0:0        Internal IDE disk
+</verb></tscreen>
+
+You can also boot from a floppy, you need a XCOFF-format kernel image
+(in this example: vmlinux.coff), copied to a HFS format high-density
+(1.44Mb) floppy.
+<tscreen><verb>
+        > nvsetenv boot-device  "fd:vmlinux.coff"
+        > nvsetenv boot-file    " root=/dev/sda3"
+</verb></tscreen>
+To return to MacOS, do:
+<tscreen><verb>
+        > nvsetenv boot-device  "/AAPL,ROM"
+</verb></tscreen>
+
+Valid values for "input-devices" are:
+<tscreen><verb>
+        ttya                    Modem serial port
+        ttyb                    Printer serial port
+        kbd                     Keyboard
+        enet                    Ethernet interface
+</verb></tscreen>
+
+Valid values for "output-devices" are (machine and/or OF dependent):
+<tscreen><verb>
+        screen                  Screen display (newer machines)
+        /chaos/control          Screen display (7500, 7600 and 8500)
+        /bandit/ATY,264GT-B     Screen display (6500)
+</verb></tscreen>
+
+OF is not designed to wait for your hard disk to spin up
+(remember MacOS boots from ROM).
+Use the following setting to have OF retry to boot from your disk 
+until is has spun up:
+<tscreen><verb>
+        > nvsetenv boot-command "begin ['] boot catch 1000 ms cr again"
+</verb></tscreen>
+
+You only have to append an "S" to the "boot-file" variable to boot
+Linux in single user mode.
+
+<sect1> FILES<p>
+<bf/nvsetenv/
+needs the following device:
+<descrip>
+<tag><em>/dev/nvram</em></tag> character device with major number 10
+and minor number 144
+</descrip>
+
+<sect1> SEE ALSO<p>
+macos(8)
+
+<sect1> AUTHORS<p>
+<verb>Paul Mackerras <paulus@cs.anu.edu.au> (program)</verb>
+<verb>Richard van Hees <R.M.vanHees@phys.uu.nl> (documentation)</verb>
+
+</manpage>
