@@ -1,4 +1,4 @@
-/* backlight.c - set backlight level 
+/* backlight.c - set backlight level
  *
  * Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>
  *
@@ -33,6 +33,12 @@
 #define DEBUG_REPLY
 #undef DEBUG
 
+/*
+ * muh buffer overruns necessitate this
+*/
+#define BUFLEN 80
+
+
 int fd;
 int pmu_fd;
 
@@ -60,8 +66,8 @@ int
 listen(unsigned char *y)
 {
     int n;
-    
-    n = read(fd, y, 80);
+
+    n = read(fd, y, BUFLEN);
 
 #ifdef DEBUG
     printf("%d: ",n);
@@ -83,9 +89,8 @@ listen(unsigned char *y)
 void
 set_backlight_level(int id, int set)
 {
-	unsigned char buf[16];
-	int n;
-	
+	unsigned char buf[BUFLEN + 1]; /* for offset */
+
 #ifdef DEBUG
 	printf("level set to: %d\n", set);
 #endif
@@ -94,7 +99,7 @@ set_backlight_level(int id, int set)
 	buf[1] = PMU_BACKLIGHT_BRIGHT;
 	buf[2] = (set < 1 ? 0x7f : 0x4a - (set<<1) );
 	send(buf, 3);
-	n = listen(buf+1);
+	listen(buf+1);
 
 	buf[0] = id;
 	buf[1] = PMU_POWER_CTRL;
@@ -104,20 +109,20 @@ set_backlight_level(int id, int set)
 }
 
 /*
- * heuristics for finding the PMU: the first device that responds to a 
+ * heuristics for finding the PMU: the first device that responds to a
  * extended battery status request is assumed to be the PMU
  */
 int
 locate_pmu(void)
 {
 	int i, n;
-	
-	unsigned char buf[16];
-		
+
+	unsigned char buf[BUFLEN];
+
 	for (i=1; i<16; i++) {
-#ifdef DEBUG_SCAN		
+#ifdef DEBUG_SCAN
 		printf("testing %d...\n", i);
-#endif		
+#endif
 		buf[0] = i;
 		buf[1] = 0x6b;
 
@@ -126,7 +131,7 @@ locate_pmu(void)
 
 		if (n >= 8)
 		{
-#ifdef DEBUG		
+#ifdef DEBUG
 			printf("found PMU at %d\n", id);
 #ifdef DEBUG_REPLY
 			printf("%d: ",n);
@@ -152,7 +157,7 @@ main(int argc, char **argv)
 	char devname[64];
 #endif
 	int arg;
-	
+
 	id = -1;
 	level = -1;
 	use_adb = 0;
@@ -188,7 +193,7 @@ main(int argc, char **argv)
   		printf("  **************************************************\n");
   		return 0;
   	}
-  	
+
 	printf("  *************         WARNING         ************\n");
 	printf("  **  backlight is obsolete, please use fblevel   **\n");
 	printf("  **************************************************\n");
@@ -198,7 +203,7 @@ main(int argc, char **argv)
 		perror("opening /dev/adb");
 		exit(EXIT_FAILURE);
 	}
-  
+
 	id = locate_pmu();
 	if (id < 0)
 	{
@@ -213,10 +218,10 @@ main(int argc, char **argv)
 #ifdef TEST_ADBDEV	/* needs kernel patch ... */
 	close(fd);
 
-	/* 
+	/*
 	 * 'raw' device; doesn't work for devices with assigned input
-	 * handler currently (bug in kernel driver) 
-	 * 'buffered' device, however, doesn't work for devices 
+	 * handler currently (bug in kernel driver)
+	 * 'buffered' device, however, doesn't work for devices
 	 * without handler attached ...
 	 */
 	sprintf(devname, "/dev/adb%d", id);
@@ -246,7 +251,7 @@ main(int argc, char **argv)
 			if (ioctl(pmu_fd, PMU_IOC_SET_BACKLIGHT, &level) < 0)
 				perror("PMU_IOC_SET_BACKLIGHT ioctl");
 		}
-		if (!quiet) 
+		if (!quiet)
 			printf("Backlight set to level: %d\n", level);
 	} else {
 		/* use /dev/pmu ioctl to talk to PMU */
