@@ -3,6 +3,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
+#include <asm/nvram.h>
+#ifndef IOC_NVRAM_SYNC
+#warning IOC_NVRAM_SYNC undefined -- update your headers
+#define IOC_NVRAM_SYNC _IO('p', 0x43)
+#endif
 
 #define NVSTART	0x140f
 #define NVSIZE	0x2
@@ -96,6 +102,7 @@ int main(int ac, char **av)
 	break;
     }
 
+    (void) ioctl(nvfd, IOC_NVRAM_SYNC);
     (void) close(nvfd);
     exit(EXIT_SUCCESS);
 }

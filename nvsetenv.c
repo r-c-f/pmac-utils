@@ -1,15 +1,33 @@
+/*	nvsetnv.c
+
+	used to set the Envenrioment variables in power macs NVram.
+	Decides via /proc/cpuinfo which type of machine is used.
+
+		Copyright (C) 1996-1998 by Paul Mackerras.
+	nwcode: Copyright (C) 2000	by Klaus Halfmann
+
+	see README for details
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
+#include <asm/nvram.h>
+#ifndef IOC_NVRAM_SYNC
+#warning IOC_NVRAM_SYNC undefined -- update your headers
+#define IOC_NVRAM_SYNC _IO('p', 0x43)
+#endif
 
-#define NVSTART	0x1800
-#define NVSIZE	0x800
+#define NVSTART		0x1800 	// Start of the NVRam OF partition
+#define NVSIZE		0x800	// Size of of the NVRam
 #define MXSTRING        128
 #define N_NVVARS	(int)(sizeof(nvvars) / sizeof(nvvars[0]))
+#define NVMAGIC		0x1275
 
-static int nvfd, nvstr_used;
+static int  nvstr_used;
 static char nvstrbuf[NVSIZE];
 
 struct nvram {
@@ -24,12 +42,13 @@ struct nvram {
     unsigned long  vals[1];
 };
 
-union {
-    struct nvram nv;
-    char c[NVSIZE];
-    unsigned short s[NVSIZE/2];
-} nvbuf;
+typedef union {
+    struct nvram 	nv;
+    char 		c[NVSIZE];
+    unsigned short 	s[NVSIZE/2];
+} nvbuftype;
 
+nvbuftype nvbuf;
 
 enum nvtype {
     boolean,
@@ -70,16 +89,21 @@ struct nvvar {
     {"boot-command", string},
 };
 
+	// Calculated number of variables
+#define N_NVVARS	(int)(sizeof(nvvars) / sizeof(nvvars[0]))
+
 union nvval {
-    unsigned long word_val;
-    char *str_val;
+    unsigned long 	word_val;
+    char 		*str_val;
 } nvvals[32];
 
-int
-nvcsum( void )
+extern int checkNewWorld(void); 		// from nwnvsetenv
+extern int nvNew(int ac, char** av, int nfd); 	// from nwnvsetenv
+
+int nvcsum( void )
 {
-    int i;
-    unsigned c;
+    int 	i;
+    unsigned	c;
     
     c = 0;
     for (i = 0; i < NVSIZE/2; ++i)
@@ -89,28 +113,29 @@ nvcsum( void )
     return c & 0xffff;
 }
 
-void
-nvload( void )
+static void nvload( int nvfd )
 {
     int s;
 
     if (lseek(nvfd, NVSTART, 0) < 0
 	|| read(nvfd, &nvbuf, NVSIZE) != NVSIZE) {
-	perror("Error reading /dev/nvram");
+	perror("Error reading nvram device");
 	exit(EXIT_FAILURE);
     }
+    if (nvbuf.nv.magic != NVMAGIC)
+	(void) fprintf(stderr, "Warning: Bad magic number %x\n",
+			 nvbuf.nv.magic);
     s = nvcsum();
     if (s != 0xffff)
        (void) fprintf(stderr, "Warning: checksum error (%x) on nvram\n", 
 		      s ^ 0xffff);
 }
 
-void
-nvstore(void)
+static void nvstore(int nvfd)
 {
     if (lseek(nvfd, NVSTART, 0) < 0
 	|| write(nvfd, &nvbuf, NVSIZE) != NVSIZE) {
-	perror("Error writing /dev/nvram");
+	perror("Error writing nvram device");
 	exit(EXIT_FAILURE);
     }
 }
@@ -136,6 +161,10 @@ void nvunpack( void )
  	case string:
 	    off = nvbuf.nv.vals[vi] >> 16;
 	    len = nvbuf.nv.vals[vi++] & 0xffff;
+	    if (len > MXSTRING) {
+		(void) fprintf(stderr, "string value in variable %d is too long (%d bytes)\n", i, len);
+		exit(EXIT_FAILURE);
+	    }
 	    nvvals[i].str_val = nvstrbuf + nvstr_used;
 	    memcpy(nvvals[i].str_val, nvbuf.c + off - NVSTART, (size_t) len);
 	    nvvals[i].str_val[len] = (char) 0;
@@ -145,8 +174,7 @@ void nvunpack( void )
     }
 }
 
-void
-nvpack( void )
+void nvpack( void )
 {
     int     i, vi;
     size_t  off, len;
@@ -184,7 +212,7 @@ nvpack( void )
     nvbuf.nv.cksum = (unsigned short int) (~nvcsum());
 }
 
-void
+static void
 print_var(int i, int indent)
 {
     char *p;
@@ -207,8 +235,7 @@ print_var(int i, int indent)
     (void) printf("\n");
 }
 
-void
-parse_val(int i, char *str)
+void parse_val(int i, char *str)
 {
     char *endp;
 
@@ -238,40 +265,10 @@ parse_val(int i, char *str)
     }
 }
 
-int 
-main(int ac, char **av)
+
+void nvOld(int ac, char** av, int i, int nvfd)
 {
-    int i = 0, l, print;
-
-    l = (int) strlen(av[0]);
-    print = (int) (ac <= 2 || 
-		   (l > 8 && strcmp(&av[0][l-8], "printenv") == 0));
-    if (print != 0 && ac > 2) {
-	(void) fprintf(stderr, "Usage: %s [variable]\n", av[0]);
-	exit(EXIT_FAILURE);
-    }
-    if (ac > 3) {
-	(void) fprintf(stderr, "Usage: %s [variable [value]]\n", av[0]);
-	exit(EXIT_FAILURE);
-    }
-
-    if (ac >= 2) {
-	for (i = 0; i < N_NVVARS; ++i)
-	    if (strcmp(av[1], nvvars[i].name) == 0)
-		break;
-	if (i >= N_NVVARS) {
-	    (void) fprintf(stderr, "%s: no variable called '%s'\n", 
-			   av[1], av[1]);
-	    exit(EXIT_FAILURE);
-	}
-    }
-
-    nvfd = open("/dev/nvram", ac <= 2 ? O_RDONLY: O_RDWR);
-    if (nvfd < 0) {
-	perror("Couldn't open /dev/nvram");
-	exit(EXIT_FAILURE);
-    }
-    nvload();
+    nvload(nvfd);
     nvunpack();
 
     switch (ac) {
@@ -289,10 +286,56 @@ main(int ac, char **av)
     case 3:
 	parse_val(i, av[2]);
 	nvpack();
-	nvstore();
+	nvstore(nvfd);
 	break;
     }
+}
 
+int main(int ac, char **av)
+{
+    int i = 0, l, print, nvfd, newWorld;
+
+    l = (int) strlen(av[0]);
+    // print when no value is set OR we are aclled as <xxx>printenv
+    print = (int) (ac <= 2 || 
+		   (l > 8 && strcmp(&av[0][l-8], "printenv") == 0));
+    if (print != 0 && ac > 2) {
+	(void) fprintf(stderr, "Usage: %s [variable]\n", av[0]);
+	exit(EXIT_FAILURE);
+    }
+    if (ac > 3) {
+	(void) fprintf(stderr, "Usage: %s [variable [value]]\n", av[0]);
+	exit(EXIT_FAILURE);
+    }
+
+    newWorld = checkNewWorld();
+    
+    if (!newWorld && ac >= 2) {
+	for (i = 0; i < N_NVVARS; ++i)
+	    if (strcmp(av[1], nvvars[i].name) == 0)
+		break;
+	if (i >= N_NVVARS) {
+	    (void) fprintf(stderr, "%s: no variable called '%s'\n", 
+			   av[1], av[1]);
+	    exit(EXIT_FAILURE);
+	}
+    }
+
+    nvfd = open("/dev/misc/nvram", ac <= 2 ? O_RDONLY: O_RDWR);
+    if (nvfd < 0) {
+      nvfd = open("/dev/nvram", ac <= 2 ? O_RDONLY: O_RDWR);
+      if (nvfd < 0) {
+	perror("Couldn't open nvram device");
+	exit(EXIT_FAILURE);
+      }
+    }
+
+    if (newWorld)
+    	nvNew(ac, av, nvfd);
+    else
+    	nvOld(ac, av, i, nvfd);
+    
+    (void) ioctl(nvfd, IOC_NVRAM_SYNC);
     (void) close(nvfd);
     exit(EXIT_SUCCESS);
 }

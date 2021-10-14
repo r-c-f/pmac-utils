@@ -1,0 +1,46 @@
+.TH TRACKPAD 8 "24th January 2003"
+
+.SH NAME
+trackpad \- tool for changing behaviour of PowerMac trackpads
+
+.SH SYNOPSIS
+.B trackpad
+[
+.B notap
+|
+.B tap
+|
+.B drag
+|
+.B lock
+|
+.B show
+]
+
+.SH DESCRIPTION
+.B trackpad
+changes the behaviour of the PowerMac trackpad when generating mouse button
+events.  The trackpad can be configured to generate a click when tapped,
+a click-drag, click-and-lock, or no click at all.
+
+.SH OPTIONS
+
+.TP
+.B notap
+Don't generate click events when the trackpad is tapped.
+.TP
+.B tap
+Generate a click when the trackpad is tapped.
+.TP
+.B drag
+Generate click-and-hold events, for drag-and-drop, when the trackpad is tapped.
+.TP
+.B lock
+Click and lock when the trackpad is tapped.
+.TP
+.B show
+Show the current state of the trackpad.
+
+.SH AUTHOR
+This manual page was written by Jamie Wilkinson <jaq@debian.org> for the
+Debian GNU/Linux system (but may be used by others).

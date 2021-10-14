@@ -1,0 +1,3 @@
+Q: My hardware clock just stopped working!  What do I do?
+A: You've got a PowerMac and you don't have CONFIG_PPC_RTC enabled.  You
+need to run at least 2.2.18, and turn it on.

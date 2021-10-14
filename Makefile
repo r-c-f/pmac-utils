@@ -22,16 +22,28 @@ man8dir  = $(usr_prefix)/man/man8
 
 SGMLMAN	= sgml2txt -man
 CC	= gcc -Wall -Wstrict-prototypes
-CFLAGS	= -O2 -fsigned-char 
-LDFLAGS = -s
+CFLAGS	?= -O2
+CFLAGS	+= -g -fsigned-char -D_GNU_SOURCE
+LDFLAGS =
 INSTALL	= /usr/bin/install -c
 SOUND_INC = -I.
 
-PROGS	= clock fdeject mousemode nvsetenv nvvideo sndvolmix vmode
+PROGS	= clock mousemode nvsetenv trackpad backlight nvsetvol \
+	fblevel fnset lsprop autoboot bootsched
 SCRIPTS	= macos
+
+GENERATED_MAN = clock.8 macos.8 nvsetenv.8 sndvolmix.8 fdeject.1 \
+	mousemode.8 nvvideo.8 vmode.8 autoboot.8
+
 
 # DEPENDENCIES:
 all:	$(PROGS) $(SCRIPTS)
+
+autoboot:
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
+
+bootsched:
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
 
 clock:
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
@@ -42,7 +54,25 @@ fdeject:
 mousemode:
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
 
-nvsetenv:
+trackpad:
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
+
+backlight:
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
+
+fblevel:
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
+
+fnset:
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
+
+lsprop:
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
+
+nvsetenv: nvsetenv.c nwnvsetenv.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c nwnvsetenv.c
+
+nvsetvol:
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
 
 nvvideo:
@@ -54,15 +84,30 @@ sndvolmix:
 vmode:
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $@.c
 
-man:
-	$(SGMLMAN) clock.sgml
-	$(SGMLMAN) fdeject.sgml
-	$(SGMLMAN) mousemode.sgml
-	$(SGMLMAN) nvsetenv.sgml
-	$(SGMLMAN) nvvideo.sgml
-	$(SGMLMAN) sndvolmix.sgml
-	$(SGMLMAN) vmode.sgml
-	$(SGMLMAN) macos.sgml
+all-man: autoboot.8 clock.8 mousemode.8 nvsetenv.8 sndvolmix.8 vmode.8 macos.8 nvvideo.8 fdeject.8 fblevel.8
+
+autoboot.8: autoboot.sgml
+	$(SGMLMAN) $< && mv -f autoboot.man $@
+bootsched.8: bootsched.sgml
+	$(SGMLMAN) $< && mv -f bootsched.man $@
+
+clock.8: clock.sgml
+	$(SGMLMAN) $< && mv -f clock.man $@
+mousemode.8: mousemode.sgml
+	$(SGMLMAN) $< && mv -f mousemode.man $@
+nvsetenv.8: nvsetenv.sgml
+	$(SGMLMAN) $< && mv -f nvsetenv.man $@
+
+sndvolmix.8: sndvolmix.sgml
+	$(SGMLMAN) $< && mv -f sndvolmix.man $@
+vmode.8: vmode.sgml
+	$(SGMLMAN) $< && mv -f vmode.man $@
+macos.8: macos.sgml
+	$(SGMLMAN) $< && mv -f macos.man $@
+nvvideo.8: nvvideo.sgml
+	$(SGMLMAN) $< && mv -f nvvideo.man $@
+fdeject.8: fdeject.sgml
+	$(SGMLMAN) $< && mv -f fdeject.man $@
 
 installdirs:
 	./mkinstalldirs $(DESTDIR)$(sbindir) $(DESTDIR)$(ubindir) \
@@ -104,21 +149,24 @@ installdevs:
 install:	all man installdirs
 	$(INSTALL) -m 4511  clock $(DESTDIR)$(sbindir) 
 	$(INSTALL) -m 755   nvsetenv nvvideo $(DESTDIR)$(sbindir)
-	$(INSTALL) -m 755   mousemode sndvolmix vmode $(DESTDIR)$(usbindir)
-	$(INSTALL) -m 755   fdeject $(DESTDIR)/$(ubindir)
+	$(INSTALL) -m 755   mousemode sndvolmix vmode nvsetvol $(DESTDIR)$(usbindir)
+	$(INSTALL) -m 755   fdeject lsprop $(DESTDIR)/$(ubindir)
 	$(INSTALL) -m 755   $(SCRIPTS) $(DESTDIR)$(sbindir)
 
 	$(INSTALL) -m 644   fdeject.man	$(DESTDIR)$(man1dir)/fdeject.1
 	$(INSTALL) -m 644   clock.man	$(DESTDIR)$(man8dir)/clock.8
+	$(INSTALL) -m 644   autoboot.man	$(DESTDIR)$(man8dir)/autoboot.8
 	$(INSTALL) -m 644   mousemode.man	$(DESTDIR)$(man8dir)/mousemode.8
 	$(INSTALL) -m 644   nvsetenv.man	$(DESTDIR)$(man8dir)/nvsetenv.8
 	$(INSTALL) -m 644   nvvideo.man	$(DESTDIR)$(man8dir)/nvvideo.8
 	$(INSTALL) -m 644   sndvolmix.man	$(DESTDIR)$(man8dir)/sndvolmix.8
 	$(INSTALL) -m 644   vmode.man	$(DESTDIR)$(man8dir)/vmode.8
 	$(INSTALL) -m 644   macos.man	$(DESTDIR)$(man8dir)/macos.8
+	$(INSTALL) -m 644   trackpad.8	$(DESTDIR)$(man8dir)/trackpad.8
+	$(INSTALL) -m 644   nvsetvol.8	$(DESTDIR)$(man8dir)/nvsetvol.8
 
 cleanobjs:
-	$(RM) *.o *.bak *~ *.man *.1 *.8
+	$(RM) *.o *.bak *~ *.man $(GENERATED_MAN)
 
 clean:	cleanobjs
 	$(RM) $(PROGS)

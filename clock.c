@@ -9,7 +9,8 @@
 #include <getopt.h>
 #include <sys/time.h>
 
-#include <asm/cuda.h>
+#include <linux/adb.h>
+#include <linux/cuda.h>
 
 /*
  * Adapted for Power Macintosh by Paul Mackerras.
@@ -122,7 +123,8 @@
 #define VERSION "1.4"
 
 /* Here the information for time adjustments is kept. */
-#define ADJPATH "/etc/adjtime"
+#define OLDADJPATH "/etc/adjtime"
+#define ADJPATH    "/var/lib/hwclock/adjtime"
 
 /* Apparently the RTC on PowerMacs stores seconds since 1 Jan 1904 */
 #define RTC_OFFSET	2082844800
@@ -140,7 +142,7 @@ int debug = 0;
 
 time_t mkgmtime(struct tm *);
 
-volatile void 
+void 
 usage ( void )
 {
   (void) fprintf (stderr, 
@@ -239,7 +241,11 @@ main (int argc, char **argv )
       if ((adj = fopen (ADJPATH, "r")) == NULL)
 	{
 	  perror (ADJPATH);
-	  exit(EXIT_FAILURE);
+	  if ((adj = fopen (OLDADJPATH, "r")) == NULL)
+	    {
+	      perror (OLDADJPATH);
+	      exit(EXIT_FAILURE);
+	    }
 	}
       if (fscanf (adj, "%lf %d %lf", &factor, (int *) (&last_time), 
 		  &not_adjusted) < 0)
@@ -395,7 +401,11 @@ main (int argc, char **argv )
       if ((adj = fopen (ADJPATH, "w")) == NULL)
 	{
 	  perror (ADJPATH);
-	  exit(EXIT_FAILURE);
+	  if ((adj = fopen (OLDADJPATH, "r")) == NULL)
+	    {
+	      perror (OLDADJPATH);
+	      exit(EXIT_FAILURE);
+	    }
 	}
       (void) fprintf (adj, "%f %d %f\n", factor, (int) systime, not_adjusted);
       (void) fclose (adj);

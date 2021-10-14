@@ -1,0 +1,54 @@
+<!doctype linuxdoc system>
+
+<manpage title="AUTOBOOT" sectnum="8">
+
+<sect1> NAME<p>
+<bf>autoboot</bf> - tool for setting/resetting servermode booting of PowerMacs
+
+<sect1> SYNOPSIS<p>
+<bf>autoboot</bf> <tt>[</tt><bf>-v</bf><tt>]</tt> <bf>on</bf>
+<p>
+<bf>autoboot</bf> <tt>[</tt><bf>-v</bf><tt>]</tt> <bf>off</bf>
+<p>
+<bf>autoboot -V</bf>
+
+<sect1> DESCRIPTION<p>
+<bf>autoboot</bf>
+sets/clears Server Mode in the hardware PMU.  
+When set the machine will automatically boot as soon as power is restored after an outage.
+When cleared the machine must be manually booted.
+
+<bf>autoboot</bf> sets the Server Mode for the current OS session only.
+For continued, unattended operation
+<bf>autoboot</bf>
+should be invoked during system startup.
+
+Normal shutdown (<bf>init 0</bf>) and scheduled boots (<bf>bootsched</bf>) also reset Server Mode.
+
+<sect1> OPTIONS<p>
+<descrip>
+<tag/<bf/on/</> 
+Set Server Mode for automatic boot on power restoration after outage
+<tag/<bf/off/</>
+Clear Server Mode to require manual boot after power restoration.
+<tag/<bf/-V/</>
+Print version number.
+<tag/<bf/-v/</>
+verbose operation.
+
+</descrip>
+
+<sect1> SEE ALSO<p>
+bootsched(8)
+
+<sect1> AUTHORS<p>
+<verb>Rich Johnson <rjohnson@dogstar-interactive.com> </verb>
+
+<p>
+<bf>autoboot</bf> is derived from 
+Takeshi Oe's &lt;toe@ppc.linux.or.jp>
+<bf>pmacpow</bf>,
+as modified by Kieth Keller &lt;kkeller@speakeasy.net>
+
+
+</manpage>

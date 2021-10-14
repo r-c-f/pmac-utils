@@ -3,7 +3,7 @@
 <manpage title="NVSETENV" sectnum="8">
 
 <sect1> NAME<p>
-<bf/nvsetenv/ - change/view OF's environment boot-variables 
+<bf/nvsetenv/ - change/view Open Firmware environment variables 
 
 <sect1> SYNOPSIS<p>
 <bf>nvsetenv 
@@ -12,8 +12,7 @@
 
 <sect1> DESCRIPTION<p>
 <bf/nvsetenv/ is a program to adjust or view the Open Firmware (OF)
-boot parameters stored in non-volatile (battery-powered) RAM on your
-Macintosh computer. 
+boot parameters stored in non-volatile (battery-powered) RAM.
 <bf/nvsetenv/ will show the current values of all OF's environment
 variables when no parameters are given.
 
@@ -78,12 +77,20 @@ until is has spun up:
 You only have to append an "S" to the "boot-file" variable to boot
 Linux in single user mode.
 
+You can use install your own nvramrc patch using the following command:
+<tscreen><verb>
+	> nvsetenv nvramrc "`cat file.patch`"
+</verb></tscreen>
+(please note the backticks!), or: 
+<tscreen><verb>
+	> nvsetenv nvramrc "$(cat file.patch)"
+</verb></tscreen>
+
 <sect1> FILES<p>
-<bf/nvsetenv/
-needs the following device:
 <descrip>
 <tag><em>/dev/nvram</em></tag> character device with major number 10
 and minor number 144
+<tag><em>/proc/cpuinfo</em></tag> to identify New/Old-World machines
 </descrip>
 
 <sect1> SEE ALSO<p>
@@ -92,5 +99,6 @@ macos(8)
 <sect1> AUTHORS<p>
 <verb>Paul Mackerras <paulus@cs.anu.edu.au> (program)</verb>
 <verb>Richard van Hees <R.M.vanHees@phys.uu.nl> (documentation)</verb>
+<verb>Klaus Halfmann  <halfmann@libra.de> (NewWorld code)</verb>
 
 </manpage>

@@ -1,0 +1,27 @@
+.TH NVSETVOL 8 "16th February 2003"
+
+.SH NAME
+nvsetvol \- tool for changing startup volume of PowerMac machines
+
+.SH SYNOPSIS
+.B nvsetvol
+[
+.B volume
+]
+
+.SH DESCRIPTION
+.B nvsetvol
+queries and sets the base volume of a PowerMac machine.  With no options,
+.B nvsetvol
+displays the current volume; with a numerical argument, it sets the volume.
+The
+.B volume
+argument should be a number from 0 to 255.  0 will turn off the annoying
+startup chime.
+
+.SH AUTHOR
+.B nvsetvol
+was written by Matteo Frigo <athena@fftw.org>.
+
+This manual page was written by Daniel Jacobowitz <dan@debian.org> for the
+Debian GNU/Linux distribution.

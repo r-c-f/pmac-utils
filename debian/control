@@ -1,0 +1,26 @@
+Source: pmac-utils
+Section: utils
+Priority: important
+Maintainer: Michael Schmitz <schmitzmic@gmail.com>
+Uploaders: Adam Conrad <adconrad@0c3.net>
+Standards-Version: 3.9.7
+Build-Depends: debhelper (>= 7), linuxdoc-tools-text | sgml-tools, groff
+
+Package: pmac-utils
+Architecture: powerpc ppc64
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Breaks: powerpc-utils (<< 1.2.26-3)
+Replaces: powerpc-utils (<< 1.2.26-3)
+Description: Various utilities for PowerMacs
+ Utilities for Linux on PowerMac hardware.
+ .
+  mousemode - tell an ADB mouse to use a given device handler ID.
+  nvsetenv - change/view Open Firmware environment variables.
+  nvsetvol - set Open Firmware stored volume setting. 
+  clock - Hardware clock program for Power Macs.
+  trackpad - modify PowerBook trackpad behavior (tap/drag mode).
+  fblevel - control LCD/TFT display backlight brightness.
+  fnset - set PowerBook keyboard function keys mode.
+  lsprop - list OF device tree in human readable format
+  autoboot - set autoboot (server mode) flag on CUDA PowerMacs
+  bootsched - set automatic power up time on CUDA PowerMacs

@@ -1,0 +1,62 @@
+<!doctype linuxdoc system>
+
+<manpage title="BOOTSCHED" sectnum="8">
+
+<sect1> NAME<p>
+<bf>bootsched</bf> - tool for setting startup time of PowerMacs
+
+<sect1> SYNOPSIS<p>
+<bf>bootsched</bf> <tt>[</tt><bf>-q</bf><tt>]</tt> <tt>[</tt><bf>-w|-e|-d DAY</bf><tt>]</tt> <bf>-t HH:MM</bf>
+<p>
+<bf>bootsched</bf> <tt>[</tt><bf>-q</bf><tt>]</tt> <bf>+value<tt>[</tt>mhd<tt>]</tt></bf>
+<p>
+<bf>bootsched -h</bf>
+
+<sect1> DESCRIPTION<p>
+<bf>bootsched</bf>
+sets the scheduled boot time in the hardware PMU.  
+When set the machine will automatically boot at the specified time.
+When cleared the machine must be manually booted.
+
+<bf>bootsched</bf> sets the boot time for the next startup only.
+For continued, unattended operation
+<bf>bootsched</bf>
+should be invoked during system startup.
+
+<sect1> OPTIONS<p>
+<descrip>
+<tag/<bf/-w/</> 
+Set next power-up on a weekday
+<tag/<bf/-e/</> 
+Set next power-up on a weekend day
+<tag/<bf/-d DAY/</> 
+Set next power-up on to DAY (0..6). Day 0 represents Sunday
+<tag/<bf/-t HH:MM/</> 
+Set time of day to power up
+<tag/<bf/+value[mhd]/</> 
+Set next power up at a time in seconds, minutes, hours or days 
+ahead of current time
+<tag/<bf/-q/</>
+Quiet mode
+<tag>
+<tag/<bf/-h/</>
+Print usage information.
+<tag/<bf/-v/</>
+verbose operation.
+
+</descrip>
+
+<sect1> SEE ALSO<p>
+autoboot(8)
+
+<sect1> AUTHORS<p>
+<verb>Michael Schmitz <schmitz@biophys.uni-duesseldorf.de> </verb>
+
+<p>
+<bf>bootsched</bf> is derived from 
+Takeshi Oe's &lt;toe@ppc.linux.or.jp>
+<bf>pmacpow</bf>,
+as modified by Kieth Keller &lt;kkeller@speakeasy.net>
+
+
+</manpage>

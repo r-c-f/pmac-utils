@@ -1,0 +1,90 @@
+.if n .ds Q \&"
+.if t .ds Q ``
+.if n .ds U \&"
+.if t .ds U ''
+.TH "FDEJECT" 1 
+.tr \&
+.nr bi 0
+.nr ll 0
+.nr el 0
+.de DS
+..
+.de DE
+..
+.de Pp
+.ie \\n(ll>0 \{\
+.ie \\n(bi=1 \{\
+.nr bi 0
+.if \\n(t\\n(ll=0 \{.IP \\(bu\}
+.if \\n(t\\n(ll=1 \{.IP \\n+(e\\n(el.\}
+.\}
+.el .sp 
+.\}
+.el \{\
+.ie \\nh=1 \{\
+.LP
+.nr h 0
+.\}
+.el .PP 
+.\}
+..
+.SH NAME
+
+.Pp
+\fBfdeject\fP - eject floppy
+.Pp
+.SH SYNOPSIS
+
+.Pp
+\fBfdeject\fP \f(CR[\fP\fIdevice\fP\f(CR]\fP
+.Pp
+.SH DESCRIPTION
+
+.Pp
+\fBfdeject\fP lets you eject a floppy out of your Power Macintosh
+floppy drive.
+.Pp
+.SH OPTIONS
+
+.Pp
+.nr ll +1
+.nr t\n(ll 2
+.if \n(ll>1 .RS
+.IP "\fIdevice\fP"
+.nr bi 1
+.Pp
+name of your floppy device, 
+default: \fB/dev/fd0\fP
+.if \n(ll>1 .RE
+.nr ll -1
+.Pp
+.SH AUTHORS
+
+.Pp
+.DS
+.sp 
+.ft RR
+.nf
+Paul Mackerras <paulus@cs.anu.edu.au> (program)
+.DE
+.fi 
+.ec
+.ft P
+.sp
+
+.DS
+.sp 
+.ft RR
+.nf
+Richard van Hees <R.M.vanHees@phys.uu.nl> (documentation)
+.DE
+.fi 
+.ec
+.ft P
+.sp
+.Pp
+.SH BUGS
+
+.Pp
+none ;-)
+.Pp

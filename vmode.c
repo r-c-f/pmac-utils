@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/vt.h>
-#include <linux/vc_ioctl.h>
+#include <asm/vc_ioctl.h>
 
 int die(char *str)
 {

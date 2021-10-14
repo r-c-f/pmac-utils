@@ -1,0 +1,50 @@
+.\" Copyright (c) 2000 Stephan Leemburg
+.\"
+.\"  This program is free software; you can redistribute it and/or
+.\"  modify it under the terms of the GNU General Public License
+.\"  as published by the Free Software Foundation; either version
+.\"  2 of the License, or (at your option) any later version.
+.\"
+.\" $Log: fblevel.8,v $
+.\" Revision 1.1.1.1  2001/12/07 11:31:50  sleemburg
+.\" Initial CVS import of the unreleased pmud-0.8 to apmud (new project name
+.\" because of a name clash at sourceforge.net).
+.\"
+.\" Revision 1.1  2000/05/11 14:52:40  stephan
+.\" Initial revision
+.\"
+.\"
+.Dd March 28, 2000
+.Dt FBLEVEL 8
+.Os "LinuxPPC pmud"
+.Sh NAME
+.Nm fblevel
+.Nd sets the display brightness level on a notebook
+.Sh SYNOPSIS
+.Nm fblevel
+.Op on
+.Op off
+.Op <level>
+.Sh DESCRIPTION
+.Nm fblevel
+is a program, with which you can set the Framebuffer Backlight level on notebooks. 
+The minimum level is 0 and the maximum is 31. 
+<level>
+adjustment will only set the backlight level, whereas 
+<on> or
+<off>
+will power on or off parts of the display controller as well.
+.Pp 
+With no option, 
+.Nm fblevel
+will report the current backlight level. 
+.Sh BUGS AND CHANGE REQUESTS
+Please email your bug reports or change requests to \fB<pmud-bugs@jvc.nl>\fP. 
+.Sh FILES
+.nf
+/dev/fb
+.fi
+.Sh AUTHOR
+Stephan Leemburg <stephan@jvc.nl>.
+.Sh SEE ALSO
+.Xr pmud(8)

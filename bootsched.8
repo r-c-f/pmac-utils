@@ -1,0 +1,130 @@
+.if n .ds Q \&"
+.if t .ds Q ``
+.if n .ds U \&"
+.if t .ds U ''
+.TH "BOOTSCHED" 8 
+.tr \&
+.nr bi 0
+.nr ll 0
+.nr el 0
+.de DS
+..
+.de DE
+..
+.de Pp
+.ie \\n(ll>0 \{\
+.ie \\n(bi=1 \{\
+.nr bi 0
+.if \\n(t\\n(ll=0 \{.IP \\(bu\}
+.if \\n(t\\n(ll=1 \{.IP \\n+(e\\n(el.\}
+.\}
+.el .sp 
+.\}
+.el \{\
+.ie \\nh=1 \{\
+.LP
+.nr h 0
+.\}
+.el .PP 
+.\}
+..
+.SH NAME
+
+.Pp
+\fBbootsched\fP - tool for setting startup time of PowerMacs
+.Pp
+.SH SYNOPSIS
+
+.Pp
+\fBbootsched\fP \f(CR[\fP\fB-q\fP\f(CR]\fP \f(CR[\fP\fB-w\(br-e\(br-d DAY\fP\f(CR]\fP \fB-t HH:MM\fP
+.Pp
+\fBbootsched\fP \f(CR[\fP\fB-q\fP\f(CR]\fP \fB+value\f(CR[\fPmhd\f(CR]\fP\fP
+.Pp
+\fBbootsched -h\fP
+.Pp
+.SH DESCRIPTION
+
+.Pp
+\fBbootsched\fP
+sets the scheduled boot time in the hardware PMU on OldWorld PowerMacs.  
+When set the machine will automatically boot at the specified time.
+When cleared the machine must be manually booted.
+\fBbootsched\fP can not be used on NewWorld PowerMacs.
+.Pp
+\fBbootsched\fP sets the boot time for the next startup only.
+For continued, unattended operation
+\fBbootsched\fP
+should be invoked during system startup.
+.Pp
+.SH OPTIONS
+
+.Pp
+.nr ll +1
+.nr t\n(ll 2
+.if \n(ll>1 .RS
+.IP "\fB-w\fP"
+.nr bi 1
+.Pp
+Set next power-up on a weekday
+.IP "\fB-e\fP"
+.nr bi 1
+.Pp
+Set next power-up on a weekend day
+.IP "\fB-d DAY\fP"
+.nr bi 1
+.Pp
+Set next power-up on to DAY (0..6). Day 0 represents Sunday
+.IP "\fB-t HH:MM\fP"
+.nr bi 1
+.Pp
+Set time of day to power up
+.IP "\fB+value[mhd]\fP"
+.nr bi 1
+.Pp
+Set next power up at a time in seconds, minutes, hours or days 
+ahead of current time
+.IP "\fB-q\fP"
+.nr bi 1
+.Pp
+Quiet mode
+.IP ""
+.nr bi 1
+.Pp
+.IP "\fB-h\fP"
+.nr bi 1
+.Pp
+Print usage information.
+.IP "\fB-v\fP"
+.nr bi 1
+.Pp
+verbose operation.
+.Pp
+.if \n(ll>1 .RE
+.nr ll -1
+.Pp
+.SH SEE ALSO
+
+.Pp
+autoboot(8)
+.Pp
+.SH AUTHORS
+
+.Pp
+.DS
+.sp 
+.ft RR
+.nf
+Michael Schmitz <schmitz@biophys.uni-duesseldorf.de> 
+.DE
+.fi 
+.ec
+.ft P
+.sp
+.Pp
+.Pp
+\fBbootsched\fP is derived from 
+Takeshi Oe's <toe@ppc.linux.or.jp>
+\fBpmacpow\fP,
+as modified by Kieth Keller <kkeller@speakeasy.net>
+.Pp
+.Pp

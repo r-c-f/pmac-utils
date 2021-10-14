@@ -3,7 +3,7 @@
 <manpage title="MOUSEMODE" sectnum="8">
 
 <sect1> NAME<p>
-<bf>mousemode</bf> - tell the mouse to use a given device handler ID
+<bf>mousemode</bf> - tell an ADB mouse to use a given device handler ID
 
 <sect1> SYNOPSIS<p>
 <bf/mousemode/

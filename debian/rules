@@ -1,0 +1,69 @@
+#! /usr/bin/make -f
+# -*- makefile -*-
+
+install_file 	:= install -p -c -m 644
+install_program := install -p -c -m 755
+make_directory 	:= install -d -m 755
+
+CFLAGS := -g -Wall
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+export CFLAGS
+
+build: build-indep build-arch
+
+build-indep:
+
+build-arch: build-stamp
+build-stamp:
+	dh_testdir awacs_defs.h
+
+	$(MAKE) autoboot bootsched clock mousemode nvsetenv autoboot.8 bootsched.8 clock.8 mousemode.8 nvsetenv.8 backlight trackpad nvsetvol fblevel fnset lsprop
+
+	touch build-stamp
+
+clean:
+	dh_testdir awacs_defs.h
+
+	rm -f build-stamp
+	$(MAKE) clean
+
+	dh_clean
+
+binary: binary-indep binary-arch
+
+binary-indep:
+
+binary-arch: build
+	dh_testdir awacs_defs.h
+	dh_testroot
+	dh_prep
+
+	dh_installdirs
+	[ -d debian/pmac-utils/etc/init.d ] && rm -rf debian/pmac-utils/etc
+
+	dh_installdocs
+	dh_installman autoboot.8 bootsched.8 clock.8 mousemode.8 nvsetenv.8 nvsetvol.8 trackpad.8 fblevel.8
+	dh_installchangelogs
+
+	#$(install_program) autoboot bootsched clock mousemode nvsetenv nvsetvol backlight trackpad fblevel fnset debian/tmp/sbin/.
+	#$(install_program) lsprop debian/tmp/usr/bin/.
+
+	dh_install autoboot bootsched clock mousemode nvsetenv nvsetvol backlight trackpad fblevel fnset sbin/.
+	dh_install lsprop usr/bin/.
+
+	dh_strip
+	dh_compress
+	dh_fixperms
+
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+.PHONY: binary binary-indep binary-arch build build-indep clean

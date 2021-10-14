@@ -1,0 +1,321 @@
+pmac-utils (1.1.3-27+ports) unreleased; urgency=medium
+
+  * Upload to unreleased for powerpc and ppc64.
+  * Bump compat level to 9 in debian/compat.
+  * Drop #define __USE_GNU from nwnvsetenv.c.
+  * Fix syntax error in autoboot.sgml.
+
+ -- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>  Tue, 08 Jan 2019 17:48:12 +0300
+
+pmac-utils (1.1.3-27) unstable; urgency=medium
+
+  * Incremental packaging updates for Standards-Version: 3.9.7:
+    - Record our source format (1.0) in debian/source/format.
+    - Stop redundantly setting DH_COMPAT in debian/rules.
+    - Add build-indep and build-arch targets to debian/rules.
+    - Use dh_prep instead of dh_clean -k in debian/rules.
+    - Add comment-only watch file to document upstream state.
+    - Use ${misc:Depends} in debian/control for binaries.
+    - Remake debian/copyright with a DEP-5 compatible format.
+
+ -- Adam Conrad <adconrad@0c3.net>  Tue, 05 Apr 2016 12:48:28 -0600
+
+pmac-utils (1.1.3-26) unstable; urgency=medium
+
+  * Add myselt to Uploaders with Michael's consent.
+  * Rename to pmac-utils, powerpc-utils is another project.
+  * Stop building on little-endian arches (LP: #1398163)
+  * Drop ancient and obsolete Conflicts/Replaces.
+
+ -- Adam Conrad <adconrad@0c3.net>  Sun, 27 Mar 2016 13:42:07 -0600
+
+powerpc-utils (1.1.3-25) unstable; urgency=medium
+
+  * Update maintainer address. Closes: #762790.
+  * Fix compiler warnings.
+
+ -- Michael Schmitz <schmitzmic@gmail.com>  Wed, 29 Oct 2014 20:28:32 +1100
+
+powerpc-utils (1.1.3-24.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add ppc64el to the Architecture: field. Closes: #738140.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sat, 20 Sep 2014 22:09:45 +0200
+
+powerpc-utils (1.1.3-24) unstable; urgency=low
+
+  * Fix fixed postinstall handling of adjtime setup (copy /etc/adjtime if it
+    exists, create new file with the correct data otherwise). 
+    Closes: #528443.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Wed, 13 May 2009 20:04:24 +1100
+
+powerpc-utils (1.1.3-23) unstable; urgency=low
+
+  * Fix broken -f option for fnset. Check for presence of ADB devices and bail 
+    out on USB based machines.
+    Closes: #474814.
+
+  * Fix postinstall handling of adjtime setup (copy /etc/adjtime if it
+    exists, create new file otherwise). 
+    Closes: #528443.
+
+  * Update bootsched manpage to clarify that it should only be used on 
+    Oldworld PowerMacs.
+    Closes: #407295.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Wed, 13 May 2009 19:34:24 +1100
+
+powerpc-utils (1.1.3-22) unstable; urgency=low
+
+  * Fix problem with nvram reads segfaulting on efika, reported by Robert
+    Millan <rm@aybabtu.com> and patched by same.
+    Closes: #431116.
+
+  * Honor DEB_BUILD_OPTS=noopt, patch by Robert Millan <rm@aybabtu.com>.
+    Closes: #431117.
+
+  * Add Aurelien Gerome <ag@roxor.cx> as co-maintainer.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Wed,  4 Jul 2007 17:21:40 +0100
+
+powerpc-utils (1.1.3-21) unstable; urgency=low
+
+  * Fix problem with truncated nvram reads/writes, reported by Adam
+    Lackorzynski <adam@os.inf.tu-dresden.de>.
+    Closes: #413131.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Wed,  7 Mar 2007 15:57:34 +0100
+
+powerpc-utils (1.1.3-20) unstable; urgency=low
+
+  * Change section to 'utils' to match override file.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Tue, 30 Jun 2006 15:39:34 +0100
+
+powerpc-utils (1.1.3-19) unstable; urgency=low
+
+  * The 'upload lost' release :-(
+
+  * Incorporate newworld autoboot patch by Rich Johnson.
+
+  * Fix description formatting (thanks to Nick Boullis <nboullis@debian.org>
+    for the alert).
+    Closes: #336972.
+
+  * Add ppc64 arch (just in case biarch powerpc isn't enough).
+    Closes: #360797.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Tue, 30 Jun 2006 15:39:34 +0100
+
+powerpc-utils (1.1.3-18) unstable; urgency=low
+
+  * add -D_GNU_SOURCE to Makefile in order to help with 64 bit pointer
+    size on ppc64.
+    Closes: #326394.
+
+  * Fix problem introduced in -12 (/etc/adjtime converted to symlink 
+    into /var fs): Convert symlink to plain copy now.
+    Closes: #332926.
+
+  * Fix char signedness bug in nvsetvol (patch by Eugen Dedu
+    <Eugen.Dedu@pu-pm.univ-fcomte.fr>.
+    Closes: #334547
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Wed, 19 Oct 2005 18:07:34 +0200
+
+powerpc-utils (1.1.3-17) unstable; urgency=low
+
+  * Fix for iBook G4 failure to save nvram data (as manifest by failure to
+    properly store the boot chime volume). Patch by Joerg Dorchain
+    <joerg@dorchain.net>.
+    Closes: #321655, #320566.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Mon, 08 Aug 2005 14:40:34 +0200
+
+powerpc-utils (1.1.3-16) unstable; urgency=low
+
+  * Brown Paper Bag release: Added bootsched util (for CUDA based Powermacs)
+    the source for which I had buried for over three years now.
+
+  * Finally, actually install the autoboot binary (reported missing by
+    Herve Eychenne <rv@eychenne.org>).
+    Closes: #317021.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Wed, 06 Jul 2005 09:42:44 +0200
+
+powerpc-utils (1.1.3-15) unstable; urgency=low
+
+  * Merge back patches from ubuntu (thanks to Adam Conrad <adconrad@0c3.net>
+    for the hint): fix linuxdoc-tools b-d, drop adb_mouse.h header. Update 
+    description to include autoboot and lsprop tools.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Mon, 09 May 2005 12:31:24 +0100
+
+powerpc-utils (1.1.3-14) unstable; urgency=low
+
+  * Fixed nvsetvol failure (infinite loop reading NVRAM) on OldWorld
+    machines (reported by Christophe Donatsch <cdonatsch@tele2.ch>).
+    Closes: #304493.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Sun, 01 May 2005 11:58:37 +0100
+
+powerpc-utils (1.1.3-13) unstable; urgency=low
+
+  * Fixed nvsetenv's devfsd bug (reported by Roger Leigh <rleigh@debian.org>).
+    Closes: #300946.
+
+  * Added autoboot util (for CUDA based Powermacs)
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Thu, 24 Mar 2005 15:58:49 +0100
+
+powerpc-utils (1.1.3-12) unstable; urgency=low
+
+  * Fixed fblevel reporting bug introduced in -11 (patch by Guido Guenther 
+    <agx@debian.org>).
+    Closes: #281908.
+
+  * Fixed clock's adjtime path (using /var/lib/hwclock/adjtime now). Keep
+    old path as backup, just in case.
+    Closes: #280605.
+
+  * Forgot to close 254308. Closes: #254308.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Thu, 18 Nov 2004 15:54:49 +0200
+
+powerpc-utils (1.1.3-11) unstable; urgency=low
+
+  * Fixed fblevel error reporting and leftover fd (patch by Guido Guenther 
+    <agx@debian.org>).
+    Closes: #206077.
+
+  * Added lsprop app (patch by Guido Guenther <agx@debian.org>). 
+    Closes: #270517.
+
+  * Document nvramrc patch command (suggstion by Simon Raven <simon@nuit.ca>).
+    Closes: #270517.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Tue, 26 Oct 2004 15:51:34 +0200
+
+powerpc-utils (1.1.3-10) unstable; urgency=low
+
+  * Changed fnset again, to use type 0x04 with fallback 0x05 on ibook. 
+    Closes: #244356.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Wed, 21 Apr 2004 07:59:29 +0200
+
+powerpc-utils (1.1.3-9) unstable; urgency=low
+
+  * Changed fnset to use type 0x05 on ibook. 
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Thu, 06 Apr 2004 15:32:43 +0200
+
+powerpc-utils (1.1.3-8) unstable; urgency=low
+
+  * New maintainer - kudos to Dan for putting up with my inertia for so
+    long, and maintaining this package for a few years.
+  * Added fblevel app (previously in pmud-utils). Closes: #204532.
+  * Added fnset app (by Jimi Xenidis, long standing wishlist item). 
+  * Added obsolescence warning to backlight app in usage info (backlight
+    considered harmful on non-powerbooks).
+  * Various control file and docs fixes.
+
+ -- Michael Schmitz <schmitz@biophys.uni-duesseldorf.de>  Thu, 12 Feb 2004 09:53:18 +0100
+
+powerpc-utils (1.1.3-7) unstable; urgency=low
+
+  * Add "show" to trackpad's command line help.
+  * Add trackpad(8) man page, from Jamie Wilkinson (Closes: #178155).
+  * Add nvsetvol, from Matteo Frigo.
+  * Use dh_installman.
+  * Improved argument handling in backlight again and updated usage info.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Sun, 16 Feb 2003 23:52:14 -0500
+
+powerpc-utils (1.1.3-6) unstable; urgency=low
+
+  * Better command-line argument parsing (Closes: #140660).
+  * Correct usage output for ``-q''.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Thu,  9 May 2002 15:41:08 -0400
+
+powerpc-utils (1.1.3-5) unstable; urgency=low
+
+  * Be more aggressive about removing the diversion.
+  * Be more aggressive about actually documenting the problem.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Sun, 15 Jul 2001 22:15:13 -0700
+
+powerpc-utils (1.1.3-4) unstable; urgency=low
+
+  * Actually change maintainer name this time.
+  * No longer divert hwclock.sh; Debian kernels have included CONFIG_PPC_RTC
+    for a long enough time now.  Document the issue.  (Closes: #99875).
+  * Builds on current unstable now.  (Closes: #99735).
+
+ -- Daniel Jacobowitz <dan@debian.org>  Sun, 15 Jul 2001 22:01:36 -0700
+
+powerpc-utils (1.1.3-3) stable unstable; urgency=medium
+
+  * Add (harmless) trackpad and backlight utilities.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 22 Nov 2000 12:43:08 -0500
+
+powerpc-utils (1.1.3-2) stable unstable; urgency=medium
+
+  * New maintainer, alas.
+  * Add newworld support to nvsetenv, by Klaus Halfmann.
+  * Migrate to debhelper.
+  * Move mousemode's man page to section 8 - mousemode is not a user
+    utility.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon,  4 Sep 2000 19:41:53 -0400
+
+powerpc-utils (1.1.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * Add hwclock.sh and divert util-linux's version.
+  * Get rid of fdeject, it's obsolete.
+  * Get rid of vmode and nvvideo, fbset is far better.
+  * Add mousemode patch from LinuxPPC/YDL.
+  * Conflicts/Replaces pmac-utils (closes:Bug#43712).
+
+ -- Joel Klecker <espy@debian.org>  Tue,  5 Oct 1999 10:09:07 -0700
+
+powerpc-utils (1.1.1-2) unstable; urgency=low
+
+  * NMU;
+  * fixed the bad diff file
+  * renaming to powerpc-utils
+
+ -- Hartmut Koptein <koptein@et-inf.fho-emden.de>  Mon, 15 Feb 1999 11:53:44 +0100
+
+pmac-utils (1.1.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * Split package into powerpc-utils and pmac-utils.
+
+ -- Joel Klecker <espy@debian.org>  Sun, 15 Nov 1998 13:41:06 -0800
+
+pmac-utils (1.1.2-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Joel Klecker <jk@espy.org>  Tue, 11 Aug 1998 04:26:35 -0700
+
+pmac-utils (1.1.1-1) unstable; urgency=low
+
+  * New Upstream Release.
+
+ -- Joel Klecker <jk@espy.org>  Thu, 19 Mar 1998 01:39:09 -0800
+
+pmac-utils (1.1-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Joel Klecker <jk@espy.org>  Sun,  1 Mar 1998 02:00:59 -0800
+
+Local variables:
+mode: debian-changelog
+End:
